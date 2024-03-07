@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        //Forward Move
         if (Input.GetKey(KeyCode.UpArrow))
         {
             isMoving = true;
@@ -39,30 +40,33 @@ public class PlayerController : MonoBehaviour
             if (Mathf.Abs(rigid.velocity.z) > maxVelocity)
                 rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y, Mathf.Sign(rigid.velocity.z) * maxVelocity);
         }
+        //Backward Move
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             isMoving = true;
 
             rigid.AddForce(-transform.forward * carSpeed, ForceMode.Acceleration);
         }
+        //Non Move
         else
         {
             isMoving = false;
         }
 
-
+        //Rotation
         if (Input.GetKey(KeyCode.LeftArrow))
             transform.Rotate(0f, -rotSpeed, 0f);
         else if (Input.GetKey(KeyCode.RightArrow))
             transform.Rotate(0f, rotSpeed, 0f);
 
-
+        //Break
         if (Input.GetKey(KeyCode.LeftShift))
         {
             rigid.velocity = new Vector3(Mathf.Lerp(rigid.velocity.x, 0, 0.025f), 0f, Mathf.Lerp(rigid.velocity.z, 0, 0.0025f));
         }
-        rigid.AddForce(Vector3.down * 9.8f);
 
+        //Add Gravity
+        rigid.AddForce(Vector3.down * 9.8f);
     }
 
     private void OnDrawGizmos()
