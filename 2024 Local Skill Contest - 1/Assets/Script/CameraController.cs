@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] Transform followPoint;
+    [SerializeField] Transform viewPoint;
     void Update()
-    { 
-        transform.localPosition = target.position + new Vector3(0f, 3.7f, -6f);
-        transform.rotation = Quaternion.Euler(25f, transform.rotation.eulerAngles.y + target.rotation.eulerAngles.y, 0f);
+    {
+        transform.position = Vector3.Lerp(transform.position,
+            followPoint.position,
+            Time.deltaTime * (Vector3.Distance(transform.position, followPoint.position) * 1.5f));
+        transform.LookAt(viewPoint.position);
     }
 
-    
+
 }
