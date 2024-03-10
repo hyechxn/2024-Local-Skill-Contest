@@ -260,7 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 153079038}
   carPhysic: {fileID: 13400000, guid: f9c402c51d1e3b943aa85657cf77c5d6, type: 2}
-  carSpeed: 100
+  carSpeed: 16
   maxVelocity: 10
   rotSpeed: 0.7
 --- !u!65 &153079048
