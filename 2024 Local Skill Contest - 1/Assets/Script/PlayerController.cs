@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
-        rigid.centerOfMass = Vector3.down;
+        rigid.centerOfMass = new Vector3(0f, -0.3f, 1f);
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        if (Physics.Raycast(transform.position + Vector3.up, -transform.up, 2.3f, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(transform.position +new Vector3(0, 0.25f, 0f), -transform.up, 0.75f, LayerMask.GetMask("Ground")))
         {
             //Forward Move
             if (Input.GetKey(KeyCode.UpArrow))
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
             //Break
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                rigid.velocity = new Vector3(Mathf.Lerp(rigid.velocity.x, 0, 0.025f), 0f, Mathf.Lerp(rigid.velocity.z, 0, 0.0025f));
+                rigid.velocity = new Vector3(Mathf.Lerp(rigid.velocity.x, 0, 0.025f), 0f, Mathf.Lerp(rigid.velocity.z, 0, 0.0025f * Time.deltaTime));
             }
         }
     }
@@ -75,6 +75,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(transform.position + Vector3.up, new Vector3(0f, -1.5f, 0f));
+        Gizmos.DrawRay(transform.position, new Vector3(0f, -0.5f, 0f));
     }
 }
