@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        if (Physics.Raycast(transform.position +new Vector3(0, 0.25f, 0f), -transform.up, 0.75f, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(transform.position +new Vector3(0, 0.25f, 0f), -transform.up, 1.25f, LayerMask.GetMask("Ground")))
         {
             //Forward Move
             if (Input.GetKey(KeyCode.UpArrow))
