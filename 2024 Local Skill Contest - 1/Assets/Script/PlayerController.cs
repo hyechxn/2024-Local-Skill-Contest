@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Car
 {
     [Header("참조")]
     [SerializeField] Rigidbody rigid;
@@ -11,18 +11,19 @@ public class PlayerController : MonoBehaviour
 
     [Space(5)]
     [Header("속성")]
-    [SerializeField] float carSpeed;
-    [SerializeField] float maxVelocity;
-
     [SerializeField] float rotSpeed;
 
-    void Start()
+    new void Awake()
     {
+        base.Awake();
+        GameManager.Instance.playerCar = transform;
+        GameManager.Instance.playerLogic = GetComponent<PlayerController>();
+        
         rigid = GetComponent<Rigidbody>();
         rigid.centerOfMass = new Vector3(0f, -0.3f, 1f);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         Move();
@@ -36,16 +37,16 @@ public class PlayerController : MonoBehaviour
             //Forward Move
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                rigid.AddForce(transform.forward * carSpeed, ForceMode.Acceleration);
-                if (Mathf.Abs(rigid.velocity.x) > maxVelocity)
-                    rigid.velocity = new Vector3(Mathf.Sign(rigid.velocity.x) * maxVelocity, rigid.velocity.y, rigid.velocity.z);
-                if (Mathf.Abs(rigid.velocity.z) > maxVelocity)
-                    rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y, Mathf.Sign(rigid.velocity.z) * maxVelocity);
+                rigid.AddForce(transform.forward * speed, ForceMode.Acceleration);
+                if (Mathf.Abs(rigid.velocity.x) > accel)
+                    rigid.velocity = new Vector3(Mathf.Sign(rigid.velocity.x) * accel, rigid.velocity.y, rigid.velocity.z);
+                if (Mathf.Abs(rigid.velocity.z) > accel)
+                    rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y, Mathf.Sign(rigid.velocity.z) * accel);
             }
             //Backward Move
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                rigid.AddForce(-transform.forward * carSpeed, ForceMode.Acceleration);
+                rigid.AddForce(-transform.forward * speed, ForceMode.Acceleration);
             }
 
             //Rotation
