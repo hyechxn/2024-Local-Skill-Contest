@@ -10,16 +10,30 @@ public class Car : MonoBehaviour
     [SerializeField]
     protected float accel;
     protected float originAccel;
+    [SerializeField]
+    protected float rotateSpeed;
+    protected float originRotateSpeed;
+
+    public bool isGoal;
     public void Awake()
     {
         originAccel = accel;
         originSpeed = speed;
+        originRotateSpeed = rotateSpeed;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Goal"))
         {
-            //StageController.instance.
+            if (StageController.instance.goalIn[0] == "" )
+                StageController.instance.goalIn[0] = gameObject.tag;
+            else
+                StageController.instance.goalIn[1] = gameObject.tag;
+
+            isGoal = true;
+            rotateSpeed = 0;
+            speed = 0;
+            accel = 0;
         }
     }
 
@@ -36,8 +50,8 @@ public class Car : MonoBehaviour
     {
         if (other.tag == "Road")
         {
-            accel /= 2;
-            speed = 10;
+            accel = accel * 0.5f;
+            speed = 20;
         }
     }
 }

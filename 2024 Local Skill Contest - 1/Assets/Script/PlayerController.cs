@@ -9,10 +9,6 @@ public class PlayerController : Car
     [SerializeField] Rigidbody rigid;
     [SerializeField] PhysicMaterial carPhysic;
 
-    [Space(5)]
-    [Header("¼Ó¼º")]
-    [SerializeField] float rotSpeed;
-
     new void Awake()
     {
         base.Awake();
@@ -26,8 +22,11 @@ public class PlayerController : Car
 
     void Update()
     {
-        Move();
-        Rot();
+        if (!isGoal)
+        {
+            Move();
+            Rot();
+        }
     }
 
     void Move()
@@ -51,9 +50,9 @@ public class PlayerController : Car
 
             //Rotation
             if (Input.GetKey(KeyCode.LeftArrow))
-                transform.Rotate(0f, -rotSpeed, 0f);
+                transform.Rotate(0f, -rotateSpeed, 0f);
             else if (Input.GetKey(KeyCode.RightArrow))
-                transform.Rotate(0f, rotSpeed, 0f);
+                transform.Rotate(0f, rotateSpeed, 0f);
 
             //Break
             if (Input.GetKey(KeyCode.LeftShift))

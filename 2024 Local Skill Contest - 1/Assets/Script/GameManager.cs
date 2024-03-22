@@ -37,5 +37,6 @@ public class GameManager : MonoBehaviour
     public PlayerController playerLogic;
     public EnemyController enemyLogic;
 
+    public int score;
     public bool isPlay;
 }
