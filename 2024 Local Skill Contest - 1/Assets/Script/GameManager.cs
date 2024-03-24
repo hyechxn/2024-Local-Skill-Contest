@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -37,6 +35,21 @@ public class GameManager : MonoBehaviour
     public PlayerController playerLogic;
     public EnemyController enemyLogic;
 
+
+    public enum Item{
+        dTire,
+        mTire,
+        cTire,
+        engine6,
+        engine8
+    }
+
+    public Item item;
+
+    public bool[] inventoty = new bool[5];
+
+
     public int score;
+    public long money;
     public bool isPlay;
 }

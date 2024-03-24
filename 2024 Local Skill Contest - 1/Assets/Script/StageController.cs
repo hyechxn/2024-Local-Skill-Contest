@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class StageController : MonoBehaviour
 {
@@ -23,6 +19,7 @@ public class StageController : MonoBehaviour
 
     public Text t;
     public Text time;
+    public Text money;
     public GameObject resultDisplay;
 
     public GameObject NPC;
@@ -45,12 +42,13 @@ public class StageController : MonoBehaviour
         if(isPlay)
             timer += Time.deltaTime;
         time.text = $"{(int)instance.timer / 60} : {(int)instance.timer % 60}";
+        money.text = string.Format("{0:N0}", GameManager.Instance.money);
 
         if (GameManager.Instance.playerLogic.isGoal)
         {
             Time.timeScale = 0f;
             if (itemCount > 0)
-                GameManager.Instance.score = (1 / itemCount) * (3000 - ((int)timer * 10));//아이템 = 게이
+                GameManager.Instance.score += (1 / itemCount) * (3000 - ((int)timer * 10));
             else
                 GameManager.Instance.score = 3000 - (int)timer * 10;
             resultDisplay.SetActive(true);
@@ -58,7 +56,9 @@ public class StageController : MonoBehaviour
     }
     IEnumerator Play()
     {
+        Time.timeScale = 1f;
         a1.Play();
+        Debug.Log(Time.deltaTime);
         yield return new WaitForSeconds(0.15f);
         t.text = 3f+"";
         yield return new WaitForSeconds(0.85f);

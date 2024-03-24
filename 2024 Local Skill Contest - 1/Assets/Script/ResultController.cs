@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ResultController : MonoBehaviour
 {
-    public GameObject winPage; 
+    public GameObject winPage;
     public GameObject losePage;
 
     public GameObject shopPage;
@@ -32,16 +29,52 @@ public class ResultController : MonoBehaviour
     public void GoShop()
     {
         shopPage.SetActive(true);
+        ShopForTire();
+    }
+    public void ExitShop()
+    {
+        shopPage.SetActive(false);
     }
 
     public void ShopForEngine()
     {
-
+        engineShop.SetActive(true);
+        tireShop.SetActive(false);
     }
 
     public void ShopForTire()
     {
+        tireShop.SetActive(true);
+        engineShop.SetActive(false);
+    }
 
+    public void TryBuy(int inputItem)
+    {
+        GameManager.Item item = (GameManager.Item)inputItem;
+        int cost = 0;
+        switch (item)
+        {
+            case GameManager.Item.dTire:
+                cost = 5000000;
+                break;
+            case GameManager.Item.mTire:
+                cost = 15000000;
+                break;
+            case GameManager.Item.cTire:
+                cost = 25000000;
+                break;
+            case GameManager.Item.engine6:
+                cost = 20000000;
+                break;
+            case GameManager.Item.engine8:
+                cost = 30000000;
+                break;
+        }
+        if (cost <= GameManager.Instance.money)
+        {
+            GameManager.Instance.money -= cost;
+            GameManager.Instance.inventoty[(int)item] = true;
+        }
     }
 
 
@@ -49,7 +82,7 @@ public class ResultController : MonoBehaviour
     {
         if (curStage == 1)
             SceneManager.LoadScene("2_Mountain");
-        else if(curStage == 2)
+        else if (curStage == 2)
             SceneManager.LoadScene("3_City");
     }
 
