@@ -7,7 +7,6 @@ public class ResultController : MonoBehaviour
     public GameObject winPage;
     public GameObject losePage;
 
-    public GameObject shopPage;
     public GameObject engineShop;
     public GameObject tireShop;
 
@@ -28,12 +27,12 @@ public class ResultController : MonoBehaviour
 
     public void GoShop()
     {
-        shopPage.SetActive(true);
+        StageController.instance.shopPage.SetActive(true);
         ShopForTire();
     }
     public void ExitShop()
     {
-        shopPage.SetActive(false);
+        StageController.instance.shopPage.SetActive(false);
     }
 
     public void ShopForEngine()
