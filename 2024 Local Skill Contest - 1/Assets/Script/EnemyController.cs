@@ -23,6 +23,7 @@ public class EnemyController : Car
     {
         agent.speed = speed;
         agent.acceleration = accel;
+        agent.updateRotation = false;
     }
 
 
@@ -43,25 +44,50 @@ public class EnemyController : Car
     }
     private void Update()
     {
+        Vector2 forward = new Vector2(transform.position.z, transform.position.x);
+        Vector2 steeringTarget = new Vector2(agent.steeringTarget.z, agent.steeringTarget.x);
+
+        //방향을 구한 뒤, 역함수로 각을 구한다.
+        Vector2 dir = steeringTarget - forward;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        //방향 적용
+        transform.eulerAngles = Vector3.up * angle;
         if (agent.enabled)
             if (enemyType == Enumtype.enemy)
             {
+
                 if (agent.remainingDistance <= 0.5f)
                 {
                     agent.speed = 0;
                     agent.acceleration = 0;
                     agent.angularSpeed = 0;
                     agent.enabled = false;
-                    Debug.Log(123);
                 }
 
             }
+    }
+    protected new void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Goal"))
+        {
+            if (StageController.instance.goalIn[0] == "")
+                StageController.instance.goalIn[0] = gameObject.tag;
+            else
+                StageController.instance.goalIn[1] = gameObject.tag;
+
+            isGoal = true;
+            rotateSpeed = 0;
+            speed = 0;
+            accel = 0;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.CompareTag("Tunnel"))
         {
-            Destroy(gameObject);
+            if (enemyType == Enumtype.nonEnemy)
+                Destroy(gameObject);
         }
     }
 }

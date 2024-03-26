@@ -25,6 +25,7 @@ public class ShopController : MonoBehaviour
             child.interactable = !GameManager.Instance.inventoty[i + 2];
         }
 
+        tirePane.gameObject.SetActive(true);
         Time.timeScale = 0f;
     }
 

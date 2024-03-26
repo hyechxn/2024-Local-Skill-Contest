@@ -6,6 +6,15 @@ public class StageController : MonoBehaviour
 {
     public static StageController instance;
 
+    public enum Map
+    {
+        Desert,
+        Mountain,
+        City
+    }
+
+    public Map map;
+
     public float timer;
 
     public int itemCount;
@@ -18,6 +27,7 @@ public class StageController : MonoBehaviour
     public string[] goalIn = new string[2];
 
     public Text centerText;
+    public Text gain;
     public Text time;
     public Text money;
 
@@ -43,10 +53,10 @@ public class StageController : MonoBehaviour
     }
     private void Update()
     {
-        if(isPlay)
+        if (isPlay)
             timer += Time.deltaTime;
         time.text = $"{(int)instance.timer / 60} : {(int)instance.timer % 60}";
-        money.text = string.Format("{0:N0}", GameManager.Instance.money);
+        money.text = string.Format("{0:N0}만원", GameManager.Instance.money);
 
         if (GameManager.Instance.playerLogic.isGoal)
         {
@@ -64,15 +74,15 @@ public class StageController : MonoBehaviour
         a1.Play();
         Debug.Log(Time.deltaTime);
         yield return new WaitForSeconds(0.15f);
-        centerText.text = 3f+"";
+        centerText.text = 3f + "";
         yield return new WaitForSeconds(0.85f);
         a1.Play();
         yield return new WaitForSeconds(0.15f);
-        centerText.text = 2f+"";
+        centerText.text = 2f + "";
         yield return new WaitForSeconds(0.85f);
         a1.Play();
         yield return new WaitForSeconds(0.15f);
-        centerText.text = 1f+"";
+        centerText.text = 1f + "";
         yield return new WaitForSeconds(0.85f);
         a2.Play();
         yield return new WaitForSeconds(0.15f);
@@ -83,26 +93,42 @@ public class StageController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         centerText.text = "";
         isPlay = true;
-        StartCoroutine(Spawn());
+        Invoke("SpawnR", Random.Range(2, 4));
     }
 
-    IEnumerator Spawn()
+    void SpawnR()
     {
-        yield return new WaitForSeconds(Random.Range(2, 4));
         Instantiate(NPC, NPCSpawn.position + transform.right, Quaternion.Euler(1, 1, 1f));
-        yield return new WaitForSeconds(Random.Range(2, 4));
-        Instantiate(NPC, NPCSpawn.position + -transform.right, Quaternion.Euler(1, 1, 1f));
-        StartCoroutine(Spawn());
+        Invoke("SpawnL", Random.Range(2, 4));
     }
 
-    public IEnumerator SetText(string text)
+    void SpawnL()
     {
-        centerText.text = text;
+        Instantiate(NPC, NPCSpawn.position + -transform.right, Quaternion.Euler(1, 1, 1f));
+        Invoke("SpawnR", Random.Range(2, 4));
+
+    }
+
+    public IEnumerator SetGain(int text)
+    {
+        gain.text = string.Format("+{0:N0}만원", text);
         for (int i = 10; i >= 0; i--)
         {
             centerText.color = new Color(1f, 1f, 1f, 0.1f * i);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.15f);
+        }
+        gain.text = string.Empty;
+    }
+    public IEnumerator SetText(string text)
+    {
+        centerText.text = text;
+        centerText.resizeTextMaxSize = 150;
+        for (int i = 10; i >= 0; i--)
+        {
+            centerText.color = new Color(1f, 0f, 0f, 0.1f * i);
+            yield return new WaitForSeconds(0.2f);
         }
         centerText.text = string.Empty;
+        centerText.resizeTextMaxSize = 300;
     }
 }

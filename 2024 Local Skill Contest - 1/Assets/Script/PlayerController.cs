@@ -1,9 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : Car
 {
     [Header("참조")]
-    [SerializeField] Rigidbody rigid;
+    [SerializeField] public Rigidbody rigid;
     [SerializeField] PhysicMaterial carPhysic;
 
     new void Awake()
@@ -51,6 +52,8 @@ public class PlayerController : Car
             else if (Input.GetKey(KeyCode.RightArrow))
                 transform.Rotate(0f, rotateSpeed, 0f);
 
+            transform.LookAt(transform.position, transform.forward);
+            
             //Break
             if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -70,8 +73,68 @@ public class PlayerController : Car
         }
     }
 
+
+    private new void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Goal"))
+        {
+            if (StageController.instance.goalIn[0] == "")
+                StageController.instance.goalIn[0] = gameObject.tag;
+            else
+                StageController.instance.goalIn[1] = gameObject.tag;
+
+            isGoal = true;
+            rotateSpeed = 0;
+            speed = 0;
+            accel = 0;
+        }
+
+        if (other.CompareTag("Item"))
+        {
+            int itemNum = Random.Range(0, 6);
+            Debug.Log(itemNum);
+            StageController.instance.itemCount++;
+            switch (itemNum)
+            {
+                case 0:
+                    GameManager.Instance.money += 1000;
+                    StartCoroutine(StageController.instance.SetGain(1000));
+                    break;
+                case 1:
+                    GameManager.Instance.money += 500;
+                    StartCoroutine(StageController.instance.SetGain(500));
+                    break;
+                case 2:
+                    GameManager.Instance.money += 100;
+                    StartCoroutine(StageController.instance.SetGain(100));
+                    break;
+                case 3:
+                    StartCoroutine(SpeedUp(1.3f));
+                    StartCoroutine(StageController.instance.SetText("소형 부스터!"));
+                    break;
+                case 4:
+                    StartCoroutine(SpeedUp(2));
+                    StartCoroutine(StageController.instance.SetText("대형 부스터!"));
+                    break;
+                case 5:
+                    StageController.instance.shopPage.SetActive(true);
+                    break;
+            }
+            Destroy(other.gameObject);
+        }
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(transform.position, new Vector3(0f, -0.5f, 0f));
+        Gizmos.color = Color.black;
+        Gizmos.DrawRay(transform.position, transform.forward * 5);
+    }
+
+    public IEnumerator SpeedUp(float n)
+    {
+        originAccel *= n;
+        originSpeed *= n;
+        yield return new WaitForSeconds(2.5f);
+        originAccel /= n;
+        originSpeed /= n;
     }
 }

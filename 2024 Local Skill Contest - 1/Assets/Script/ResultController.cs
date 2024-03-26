@@ -16,7 +16,11 @@ public class ResultController : MonoBehaviour
     private void OnEnable()
     {
         if (StageController.instance.goalIn[0] == "Player")
+        {
             winPage.SetActive(true);
+            if(StageController.instance.map == StageController.Map.Desert) { 
+            }
+        }
         else
             losePage.SetActive(true);
 
@@ -54,19 +58,19 @@ public class ResultController : MonoBehaviour
         switch (item)
         {
             case GameManager.Item.dTire:
-                cost = 5000000;
+                cost = 500;
                 break;
             case GameManager.Item.mTire:
-                cost = 15000000;
+                cost = 1500;
                 break;
             case GameManager.Item.cTire:
-                cost = 25000000;
+                cost = 2500;
                 break;
             case GameManager.Item.engine6:
-                cost = 20000000;
+                cost = 2000;
                 break;
             case GameManager.Item.engine8:
-                cost = 30000000;
+                cost = 3000;
                 break;
         }
         if (cost <= GameManager.Instance.money)

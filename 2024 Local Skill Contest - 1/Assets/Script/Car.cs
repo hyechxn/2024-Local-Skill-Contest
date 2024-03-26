@@ -5,11 +5,11 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
     [SerializeField]
-    protected float speed;
-    protected float originSpeed;
+    public float speed;
+    public float originSpeed;
     [SerializeField]
-    protected float accel;
-    protected float originAccel;
+    public float accel;
+    public float originAccel;
     [SerializeField]
     protected float rotateSpeed;
     protected float originRotateSpeed;
@@ -21,11 +21,11 @@ public class Car : MonoBehaviour
         originSpeed = speed;
         originRotateSpeed = rotateSpeed;
     }
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Goal"))
         {
-            if (StageController.instance.goalIn[0] == "" )
+            if (StageController.instance.goalIn[0] == "")
                 StageController.instance.goalIn[0] = gameObject.tag;
             else
                 StageController.instance.goalIn[1] = gameObject.tag;
@@ -50,8 +50,28 @@ public class Car : MonoBehaviour
     {
         if (other.tag == "Road")
         {
-            accel = accel * 0.5f;
-            speed = 20;
+            if (StageController.instance.map == StageController.Map.Desert && GameManager.Instance.inventoty[0])
+            {
+                accel = originAccel;
+                speed = originSpeed;
+            }
+            else if (StageController.instance.map == StageController.Map.Mountain && GameManager.Instance.inventoty[1])
+            {
+                accel = originAccel;
+                speed = originSpeed;
+
+            }
+            else if (StageController.instance.map == StageController.Map.City && GameManager.Instance.inventoty[2])
+            {
+                accel = originAccel;
+                speed = originSpeed;
+
+            }
+            else
+            {
+                accel *= 0.5f;
+                speed *= 0.5f;
+            }
         }
     }
 }
