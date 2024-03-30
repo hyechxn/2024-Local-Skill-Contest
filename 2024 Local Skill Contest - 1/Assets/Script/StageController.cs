@@ -55,7 +55,7 @@ public class StageController : MonoBehaviour
     {
         if (isPlay)
             timer += Time.deltaTime;
-        time.text = $"{(int)instance.timer / 60} : {(int)instance.timer % 60}";
+        time.text = $"{(int)instance.timer / 60} : " + string.Format("{0:0.00}", timer % 60);
         money.text = string.Format("{0:N0}¸¸¿ø", GameManager.Instance.money);
 
         if (GameManager.Instance.playerLogic.isGoal)
