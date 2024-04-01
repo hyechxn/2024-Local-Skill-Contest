@@ -10,6 +10,7 @@
 [Ll]ogs/
 [Mm]emoryCaptures/
 2024 Local Skill Contest - 1/Assets/Packages/
+2024 Local Skill Contest - 2/Assets/Packages/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
