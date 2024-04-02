@@ -70,5 +70,21 @@ public class ShopController : MonoBehaviour
             GameManager.Instance.money -= cost;
             GameManager.Instance.inventory[index] = true;
         }
+
+        int cnt = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < transform.GetChild(0).GetChild(0).GetChild(i).childCount; j++, cnt++)
+            {
+                Debug.Log(transform.GetChild(0).GetChild(0).GetChild(i).GetChild(j).name);
+                Debug.Log(GameManager.Instance.inventory[cnt]);
+                transform.GetChild(0).GetChild(0).GetChild(i).GetChild(j).GetComponent<Button>().interactable = !GameManager.Instance.inventory[cnt];
+            }
+        }
+    }
+
+    public void ExitShop()
+    {
+        gameObject.SetActive(false);
     }
 }

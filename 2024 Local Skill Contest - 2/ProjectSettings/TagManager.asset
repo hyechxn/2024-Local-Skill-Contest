@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Road
+  - Item
+  - Goal
+  - Enemy
   layers:
   - Default
   - TransparentFX

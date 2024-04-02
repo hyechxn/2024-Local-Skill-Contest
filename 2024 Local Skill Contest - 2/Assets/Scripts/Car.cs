@@ -1,5 +1,7 @@
-﻿using Unity.VisualScripting;
+﻿using Unity.AI.Navigation.Samples;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class Car : MonoBehaviour
 {
@@ -22,9 +24,23 @@ public class Car : MonoBehaviour
     }
 
 
-    private void OnTriggerStay(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Road"))
+        if (other.CompareTag("Goal"))
+        {
+            if (StageController.instance.goalIn[0] == "")
+                StageController.instance.goalIn[0] = gameObject.tag;
+            else
+                StageController.instance.goalIn[1] = gameObject.tag;
+
+            if (tag == "Player")
+                StageController.instance.result.SetActive(true);
+        }
+    }
+
+    protected void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Road"))
         {
             if (GameManager.Instance.inventory[4])
             {
@@ -36,23 +52,34 @@ public class Car : MonoBehaviour
             {
                 speed = originSpeed * 1.3f;
                 accel = originAccel * 1.25f;
-
+            }
+            else
+            {
+                speed = originSpeed;
+                accel = originAccel;
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    protected void OnCollisionExit(Collision other)
     {
-        if (
-            (StageController.instance.curStage == StageController.Map.Desert && GameManager.Instance.inventory[0]) ||
-            (StageController.instance.curStage == StageController.Map.Mountain && GameManager.Instance.inventory[1]) ||
-            (StageController.instance.curStage == StageController.Map.City && GameManager.Instance.inventory[2])
-           )
+        if (other.gameObject.CompareTag("Road"))
         {
-            if (other.CompareTag("Road"))
+            if (!
+            ((StageController.instance.curStage == StageController.Map.Desert && GameManager.Instance.inventory[0]) ||
+            (StageController.instance.curStage == StageController.Map.Mountain && GameManager.Instance.inventory[1]) ||
+            (StageController.instance.curStage == StageController.Map.City && GameManager.Instance.inventory[2]))
+           )
             {
                 speed = speed * 0.75f;
-                accel = speed * 0.8f;
+                accel = accel * 0.8f;
+            }
+
+            else
+            {
+                speed = speed * 1;
+                accel = accel * 1;
+                
             }
         }
     }
