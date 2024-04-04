@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class PlayerController : Car
 {
 
-    public ParticleSystem p1;
-
     public LayerMask layer;
     private void OnEnable()
     {
@@ -30,19 +28,11 @@ public class PlayerController : Car
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if (!p1.isPlaying)
-                    p1.Play();
                 rigid.AddForce(transform.right * speed * Time.deltaTime, ForceMode.Acceleration);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                if (!p1.isPlaying)
-                    p1.Play();
                 rigid.AddForce(-transform.right * 0.75f * speed * Time.deltaTime, ForceMode.Acceleration);
-            }
-            else
-            {
-                p1.Stop();
             }
         }
         rigid.velocity = new Vector3(Mathf.Clamp(rigid.velocity.x, -accel, accel), rigid.velocity.y, Mathf.Clamp(rigid.velocity.z, -accel, accel));
